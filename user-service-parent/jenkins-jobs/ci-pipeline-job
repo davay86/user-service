@@ -11,7 +11,7 @@ node {
       def pom = readMavenPom file: pomLocation+'/pom.xml'
 
   try {
-      sh "mvn " + pomLocation + "/pom.xml clean install"
+      sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install"
     } finally {
                 junit targetLocation + '/surefire-reports/*.xml'
 
@@ -22,15 +22,6 @@ node {
                         reportDir            : targetLocation + '/pit-reports',
                         reportFiles          : 'index.html',
                         reportName           : "user-service pit report"
-                ])
-
-                publishHTML(target: [
-                        allowMissing         : true,
-                        alwaysLinkToLastBuild: false,
-                        keepAll              : true,
-                        reportDir            : testTargetLocation + '/' + cucumberReport,
-                        reportFiles          : 'overview-features.html',
-                        reportName           : "user-service cucumber report"
                 ])
               }
     }
