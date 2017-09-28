@@ -10,19 +10,7 @@ node {
   stage('Build'){
       def pom = readMavenPom file: pomLocation+'/pom.xml'
 
-  try {
-      sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install"
-    } finally {
-                junit targetLocation + '/surefire-reports/*.xml'
+        sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install"
 
-                publishHTML(target: [
-                        allowMissing         : true,
-                        alwaysLinkToLastBuild: false,
-                        keepAll              : true,
-                        reportDir            : targetLocation + '/pit-reports',
-                        reportFiles          : 'index.html',
-                        reportName           : "user-service pit report"
-                ])
-              }
     }
 }
