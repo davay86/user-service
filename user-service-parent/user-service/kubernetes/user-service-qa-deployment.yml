@@ -1,18 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-    name: security-admin-api
+    name: user-service
 spec:
     replicas: 1
     template:
         metadata:
             labels:
-              app: security-admin-api
+              app: user-service
               tier: backend
         spec:
             containers:
-            - name: security-admin-api
-              image: sleepingtalent/security-admin-api:1.0.0-SNAPSHOT-RC
+            - name: user-service
+              image: sleepingtalent/user-service:1.0.0-SNAPSHOT-RC
               env:
               - name: CONFIG_URL
                 value: http://ae72c3afb915511e795a406fc096cf91-818673775.us-west-2.elb.amazonaws.com:1111/config-api/
@@ -23,15 +23,15 @@ spec:
 
 kind: Service
 metadata:
-    name: security-admin-api-service
+    name: user-service-gateway
     labels:
-        app: security-admin-api
+        app: user-service
         tier: backend
 spec:
     type: LoadBalancer
     ports:
     - port: 2222
     selector:
-        app: security-admin-api
+        app: user-service
         tier: backend
 

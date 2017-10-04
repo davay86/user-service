@@ -11,7 +11,7 @@ node {
       def pom = readMavenPom file: pomLocation+'/pom.xml'
 
   //try {
-      sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install"
+      sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install -Prun-clean-env-build"
 //    } finally {
 //                junit targetLocation + '/surefire-reports/*.xml'
 //

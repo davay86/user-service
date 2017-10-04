@@ -5,7 +5,7 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface MessageChannels {
 
-    String CREATE_USER_CHANNEL = "createUserChanel";
+    String CREATE_USER_CHANNEL = "createUserChannel";
 
     @Input(CREATE_USER_CHANNEL)
     SubscribableChannel createUserChannel();

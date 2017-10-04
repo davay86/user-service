@@ -1,0 +1,28 @@
+info:
+  app:
+    name: user-service
+    description: User Service
+    version: 1.0.0
+
+server:
+  port: 2222
+  context-path: /user-service
+
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: test
+
+---
+
+spring:
+    profiles: test
+    cloud:
+      config:
+        uri: http://dummy-config-url/
+logging:
+  config: classpath:logback.xml
+
+---
+
