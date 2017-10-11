@@ -18,7 +18,8 @@ node {
             def releaseVersion = version.minus("-SNAPSHOT")
 
             try {
-                sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare -Pdocker-publish,run-clean-env-build  -DdryRun=true -Ddocker.release.version=" + releaseVersion
+                //sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare -Pdocker-publish,run-clean-env-build  -Ddocker.release.version=" + releaseVersion
+                sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare -Prun-clean-env-build  -DdryRun=true -Ddocker.release.version=" + releaseVersion
             } finally {
                 junit targetLocation + '/surefire-reports/*.xml,' + testTargetLocation + '/failsafe-reports/*.xml'
 
