@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.babcock.userservice</groupId>
+        <groupId>com.babcock.user</groupId>
         <artifactId>user-service-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>user-service</artifactId>
