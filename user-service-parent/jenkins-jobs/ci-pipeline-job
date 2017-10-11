@@ -1,28 +1,58 @@
 def pomLocation = "user-service-parent"
 def targetLocation = "user-service-parent/user-service/target"
-def cucumberReport = "cucumber-report/cucumber-html-reports/cucumber-html-reports"
+def branchName = env.BRANCH_NAME
 
 node {
+    echo "branch: "+branchName
 
-  stage('Checkout') {
-    checkout scm
-  }
-  stage('Build'){
-      def pom = readMavenPom file: pomLocation+'/pom.xml'
+    stage('Checkout') {
+        checkout scm
+    }
 
-  //try {
-      sh "mvn -B -V -U -e -f" + pomLocation + "/pom.xml clean install -Prun-clean-env-build"
-//    } finally {
-//                junit targetLocation + '/surefire-reports/*.xml'
-//
-//                publishHTML(target: [
-//                        allowMissing         : true,
-//                        alwaysLinkToLastBuild: false,
-//                        keepAll              : true,
-//                        reportDir            : targetLocation + '/pit-reports',
-//                        reportFiles          : 'index.html',
-//                        reportName           : "user-service pit report"
-//                ])
-//              }
-      }
+    if(branchName == 'master') {
+        stage('Build and Release') {
+
+            def pom = readMavenPom file: pomLocation + '/pom.xml'
+            def version = pom.version
+            def releaseVersion = version.minus("-SNAPSHOT")
+
+            try {
+                sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare -Pdocker-publish,run-clean-env-build  -Ddocker.release.version=" + releaseVersion
+            } finally {
+                junit targetLocation + '/surefire-reports/*.xml,' + testTargetLocation + '/failsafe-reports/*.xml'
+
+                publishHTML(target: [
+                        allowMissing         : true,
+                        alwaysLinkToLastBuild: false,
+                        keepAll              : true,
+                        reportDir            : targetLocation + '/pit-reports',
+                        reportFiles          : 'index.html',
+                        reportName           : "user-service pit report"
+                ])
+            }
+        }
+
+        stage('Release to QA'){
+            //sh "kubectl config --kubeconfig=/etc/.kube/config use-context aws_QA"
+            //sh "kubectl replace --kubeconfig=/etc/.kube/config  -f user-service-parent/user-service/kubernetes/user-service-qa-deployment.yml --record"
+        }
+    } else {
+        stage('Build') {
+
+            try {
+                sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml clean install -Prun-clean-env-build"
+            } finally {
+                junit targetLocation + '/surefire-reports/*.xml,' + testTargetLocation + '/failsafe-reports/*.xml'
+
+                publishHTML(target: [
+                        allowMissing         : true,
+                        alwaysLinkToLastBuild: false,
+                        keepAll              : true,
+                        reportDir            : targetLocation + '/pit-reports',
+                        reportFiles          : 'index.html',
+                        reportName           : "user-service pit report"
+                ])
+            }
+        }
+    }
 }
