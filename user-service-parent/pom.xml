@@ -28,6 +28,7 @@
 	<scm>
 		<developerConnection>scm:git:https://github.com/BabcockEMTDevelopment/user-service.git</developerConnection>
 		<connection>scm:git:https://github.com/BabcockEMTDevelopment/user-service.git</connection>
+		<tag>HEAD</tag>
   </scm>
 
 	<build>
