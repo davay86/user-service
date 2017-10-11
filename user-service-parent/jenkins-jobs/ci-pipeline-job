@@ -1,5 +1,6 @@
 def pomLocation = "user-service-parent"
 def targetLocation = "user-service-parent/user-service/target"
+def testTargetLocation = "user-service-parent/user-service-test/target"
 def branchName = env.BRANCH_NAME
 
 node {
