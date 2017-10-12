@@ -14,6 +14,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <maven.test.skip>false</maven.test.skip>
         <skip.pit.test>false</skip.pit.test>
         <pit.mutation.threshold>100</pit.mutation.threshold>
 
@@ -22,6 +23,37 @@
         <executable.server.jar.name>${server.jar.name}-${executable.jar.postfix}</executable.server.jar.name>
         <docker.release.version>${project.version}</docker.release.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>start-infrastructure-services</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <skip.pit.test>true</skip.pit.test>
+            </properties>
+        </profile>
+        <profile>
+            <id>stop-infrastructure-services</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <skip.pit.test>true</skip.pit.test>
+            </properties>
+        </profile>
+        <profile>
+            <id>start-microservice-services</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <skip.pit.test>true</skip.pit.test>
+            </properties>
+        </profile>
+        <profile>
+            <id>stop-microservice-services</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <skip.pit.test>true</skip.pit.test>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
 

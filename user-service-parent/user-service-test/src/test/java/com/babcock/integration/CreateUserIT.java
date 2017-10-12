@@ -45,7 +45,7 @@ public class CreateUserIT {
     }
 
     @Test
-    public void consumeCreateUserChannel() throws InterruptedException {
+    public void messageReceivedOn_createUserChannel_createCustomer_asExpected() throws InterruptedException {
         String uniqueStr = getUniqueString();
         String payload = getExamplePayload(uniqueStr);
 
