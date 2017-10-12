@@ -1,12 +1,16 @@
 package com.babcock.integration;
 
 import com.babcock.integration.asserter.WaitForHelper;
+import com.babcock.integration.asserter.WaitForOneRowInDB;
 import com.babcock.integration.stream.MessageChannels;
 import com.babcock.integration.application.TestApplication;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -26,12 +30,10 @@ import java.util.Map;
 @TestPropertySource("classpath:application.properties")
 public class CreateUserIT {
 
+    private static Logger logger = LoggerFactory.getLogger(CreateUserIT.class);
+
     @Autowired
     MessageChannels messageChannels;
-
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private WaitForHelper waitForHelper;
@@ -43,17 +45,29 @@ public class CreateUserIT {
     }
 
     @Test
-    public void consumeCreateUserChannel(){
-        String payload = "{ \"username\" : \"testUser\"," +
-                "\"firstname\" : \"Test\"," +
-                "\"lastname\" : \"User\"" +
-                "}";
+    public void consumeCreateUserChannel() throws InterruptedException {
+        String uniqueStr = getUniqueString();
+        String payload = getExamplePayload(uniqueStr);
 
+        logger.info("sending payload {}",payload);
         messageChannels.publishCreateUserChannel().send(createMessage(payload));
 
-        List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from users");
+        String query = buildFindByUserNameQuery("joe"+uniqueStr);
 
-        Assert.assertEquals(1, list.size());
+        logger.info("waiting for db row from query {}",query);
+        waitForHelper.waitForOneRowInDB(query);
+    }
+
+    public String buildFindByUserNameQuery(String username) {
+        return "select count(*) from users where username = '"+username+"'";
+    }
+
+    public String getExamplePayload(String uniqueStr) {
+        return "{\"username\": \"joe"+uniqueStr+"\",\"firstname\": \"joe\",\"lastname\": \""+uniqueStr+"\"}";
+    }
+
+    private String getUniqueString() {
+        return RandomStringUtils.randomAlphabetic(10);
     }
 
     private Message<String> createMessage(String payload) {

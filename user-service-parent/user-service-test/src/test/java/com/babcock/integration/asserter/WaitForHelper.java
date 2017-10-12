@@ -2,6 +2,7 @@ package com.babcock.integration.asserter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +15,9 @@ public class WaitForHelper {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Value("${user.service.url}")
     String baseUrl;
@@ -36,6 +40,12 @@ public class WaitForHelper {
             serviceUnavailable = true;
             fail("user-service docker environment unavailable");
         }
+    }
+
+    public void waitForOneRowInDB(String query) throws InterruptedException {
+        WaitForOneRowInDB waitForOneRowInDB = new WaitForOneRowInDB(query, jdbcTemplate);
+        waitForOneRowInDB.setMaxWaitTime(60000);
+        waitForOneRowInDB.performAssertion();
     }
 
 }
