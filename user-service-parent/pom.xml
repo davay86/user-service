@@ -9,7 +9,7 @@
 
 	<groupId>com.babcock.user</groupId>
 	<artifactId>user-service-parent</artifactId>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.9-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
