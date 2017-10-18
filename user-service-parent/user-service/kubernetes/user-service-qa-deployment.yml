@@ -12,10 +12,10 @@ spec:
         spec:
             containers:
             - name: user-service
-              image: sleepingtalent/user-service:1.0.9-RC
+              image: sleepingtalent/user-service:1.0.10-RC
               env:
               - name: CONFIG_URL
-                value: http://user-api-gateway:1111/config-api/
+                value: http://config-api-gateway:1111/config-api/
               ports:
               - containerPort: 2222
 
