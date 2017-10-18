@@ -15,7 +15,7 @@ spec:
               image: sleepingtalent/user-service:@docker.release.version@-RC
               env:
               - name: CONFIG_URL
-                value: http://user-api-gateway:1111/config-api/
+                value: http://config-api-gateway:1111/config-api/
               ports:
               - containerPort: 2222
 
