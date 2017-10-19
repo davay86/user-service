@@ -23,6 +23,10 @@ public class User {
     @Column(name = "LASTNAME")
     private String lastname;
 
+    @NotNull
+    @Column(name = "ACTIVE")
+    private boolean active;
+
     public User() {
     }
 
@@ -62,5 +66,17 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import java.util.List;
 
 @SpringBootTest(classes = User.class)
 @RunWith(SpringRunner.class)
@@ -28,16 +29,21 @@ public class UserRepositoryTest {
     protected TestEntityManager entityManager;
 
     long userId;
+    long nonActivateUserId;
 
     User user;
+    User nonActivatedUser;
 
     @Before
     public void setup(){
         user = new User("testUsername", "testFirstname", "testLastname");
-
+        user.setActive(true);
         entityManager.persist(user);
-
         userId = user.getId();
+
+        nonActivatedUser = new User("nonActivateUser", "nonActivatedFirstname", "nonActivatedLastname");
+        entityManager.persist(nonActivatedUser);
+        nonActivateUserId = nonActivatedUser.getId();
     }
 
     @After
@@ -53,5 +59,16 @@ public class UserRepositoryTest {
         Assert.assertEquals("testUsername", one.getUsername());
         Assert.assertEquals("testFirstname", one.getFirstname());
         Assert.assertEquals("testLastname", one.getLastname());
+    }
+
+    @Test
+    public void findByActiveIsFalse(){
+        List<User> nonActivatedUsers = userRepository.findByActiveIsFalse();
+
+        Assert.assertEquals(1, nonActivatedUsers.size());
+        User user = nonActivatedUsers.get(0);
+        Assert.assertEquals("nonActivateUser", user.getUsername());
+        Assert.assertEquals("nonActivatedFirstname", user.getFirstname());
+        Assert.assertEquals("nonActivatedLastname", user.getLastname());
     }
 }

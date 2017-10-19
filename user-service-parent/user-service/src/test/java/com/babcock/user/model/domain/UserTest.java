@@ -65,4 +65,12 @@ public class UserTest {
         Assert.assertEquals("testLastname", user.getLastname());
     }
 
+    @Test
+    public void getActive() throws Exception {
+        user= new User();
+        user.setActive(true);
+
+        Assert.assertTrue(user.isActive());
+    }
+
 }
