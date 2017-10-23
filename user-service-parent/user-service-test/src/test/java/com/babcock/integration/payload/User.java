@@ -1,46 +1,18 @@
-package com.babcock.user.model.domain;
+package com.babcock.integration.payload;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "USERS")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @NotNull
-    @Column(name = "USERNAME")
     private String username;
-
-    @NotNull
-    @Column(name = "FIRSTNAME")
     private String firstname;
-
-    @NotNull
-    @Column(name = "LASTNAME")
     private String lastname;
-
-    @NotNull
-    @Column(name = "ACTIVE")
     private boolean active;
 
-    public User() {
-    }
-
-    public User(String username, String firstname, String lastname) {
-        this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -68,11 +40,7 @@ public class User {
         this.lastname = lastname;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
