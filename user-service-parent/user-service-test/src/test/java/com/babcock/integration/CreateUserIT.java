@@ -56,9 +56,19 @@ public class CreateUserIT {
     String userServiceUrl;
 
 
+    String uniqueStr;
+    String userUsername;
+
     @Before
     public void before() throws InterruptedException {
         waitForHelper.waitForServices();
+
+        uniqueStr = getUniqueString();
+
+        userUsername = "username" + uniqueStr;
+
+        databaseHelper.insertUser(userUsername,"firstname" + uniqueStr, "lastname" + uniqueStr);
+        databaseHelper.insertActiveUser("activeUser" + uniqueStr,"activeFirstname" + uniqueStr, "activeLastname" + uniqueStr);
     }
 
     @After
@@ -68,7 +78,6 @@ public class CreateUserIT {
 
     @Test
     public void messageReceivedOn_createUserChannel_createCustomer_asExpected() throws InterruptedException {
-        String uniqueStr = getUniqueString();
         String payload = getExamplePayload(uniqueStr);
 
         logger.info("sending payload {}",payload);
@@ -82,10 +91,6 @@ public class CreateUserIT {
 
     @Test
     public void getPendingUsers() throws IOException {
-        String uniqueString = getUniqueString();
-        databaseHelper.insertUser("username" + uniqueString,"firstname" + uniqueString, "lastname" + uniqueString);
-        databaseHelper.insertActiveUser("activeUser","activeFirstname", "activeLastname");
-
         ResponseEntity<String> userList = oAuthRestTemplate.exchange(userServiceUrl + "/activateUser/getPending", HttpMethod.GET,null,String.class);
 
         List<User> users = jsonConverter.convertjsonStringToUserList(userList.getBody());
@@ -93,9 +98,26 @@ public class CreateUserIT {
         Assert.assertEquals(1,users.size());
 
         User user= users.get(0);
-        Assert.assertEquals("username" + uniqueString, user.getUsername());
-        Assert.assertEquals("firstname" + uniqueString, user.getFirstname());
-        Assert.assertEquals("lastname" + uniqueString, user.getLastname());
+        Assert.assertEquals("username" + uniqueStr, user.getUsername());
+        Assert.assertEquals("firstname" + uniqueStr, user.getFirstname());
+        Assert.assertEquals("lastname" + uniqueStr, user.getLastname());
+
+    }
+
+    @Test
+    public void messageReceivedOn_activateUserChannel_activateCustomer_asExpected() throws InterruptedException {
+        User userByUsername = databaseHelper.findUserByUsername(userUsername);
+
+
+        String payload = getActivateUserPayload(userByUsername.getId());
+
+        logger.info("sending payload {}",payload);
+        messageChannels.publishActivateUserChannel().send(createMessage(payload));
+
+        String query = buildFindActiveUserByUserNameQuery(userUsername);
+
+        logger.info("waiting for db row from query {}",query);
+        waitForHelper.waitForOneRowInDB(query);
 
     }
 
@@ -104,8 +126,16 @@ public class CreateUserIT {
         return "select count(*) from users where username = '"+username+"'";
     }
 
+    public String buildFindActiveUserByUserNameQuery(String username) {
+        return "select count(*) from users where username = '"+username+"' and active = true";
+    }
+
     public String getExamplePayload(String uniqueStr) {
         return "{\"username\": \"joe"+uniqueStr+"\",\"firstname\": \"joe\",\"lastname\": \""+uniqueStr+"\"}";
+    }
+
+    public String getActivateUserPayload(long id){
+        return "{\"id\": \""+id+"\"}";
     }
 
     private String getUniqueString() {

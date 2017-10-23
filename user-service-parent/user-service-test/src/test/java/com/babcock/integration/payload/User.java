@@ -6,7 +6,7 @@ public class User {
     private String username;
     private String firstname;
     private String lastname;
-    private String active;
+    private boolean active;
 
     public long getId() {
         return id;
@@ -40,11 +40,11 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(String active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }

@@ -1,22 +1,17 @@
 package com.babcock.user.stream;
 
 import com.babcock.user.application.TestApplication;
+import com.babcock.user.helper.MessageHelper;
+import com.babcock.user.helper.PersistenceHelper;
 import com.babcock.user.model.domain.User;
-import com.babcock.user.model.repositories.UserRepository;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.validation.Payload;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class)
@@ -27,7 +22,12 @@ public class CreateUserEventListenerTest {
     MessageChannels messageChannels;
 
     @Autowired
-    UserRepository userRepository;
+    MessageHelper messageHelper;
+
+    @Autowired
+    PersistenceHelper persistenceHelper;
+
+    User createdUser;
 
     @Test
     public void consumeCreateUserChannel() throws Exception {
@@ -36,17 +36,18 @@ public class CreateUserEventListenerTest {
                             "\"lastname\" : \"User\"" +
                 "}";
 
-        messageChannels.createUserChannel().send(createMessage(payload));
+        messageChannels.createUserChannel().send(messageHelper.createMessage(payload));
 
-        User foundUser = userRepository.findAll().get(0);
+        createdUser = persistenceHelper.findByUsername("testUser");
 
-        Assert.assertEquals("testUser", foundUser.getUsername());
-        Assert.assertEquals("Test", foundUser.getFirstname());
-        Assert.assertEquals("User", foundUser.getLastname());
+        Assert.assertEquals("testUser", createdUser.getUsername());
+        Assert.assertEquals("Test", createdUser.getFirstname());
+        Assert.assertEquals("User", createdUser.getLastname());
     }
 
-    private Message<String> createMessage(String payload) {
-        return new GenericMessage<>(payload);
+    @After
+    public void teardown(){
+        persistenceHelper.removeUser(createdUser);
     }
 
 }
