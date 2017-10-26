@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: user-service
-              image: sleepingtalent/user-service:1.0.12-RC
+              image: sleepingtalent/user-service:1.0.13-RC
               env:
               - name: CONFIG_URL
                 value: http://config-api-gateway:1111/config-api/
