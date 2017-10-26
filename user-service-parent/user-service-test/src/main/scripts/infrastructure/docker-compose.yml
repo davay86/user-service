@@ -20,6 +20,25 @@ services:
         - "15672"
   #rabbitmq url http://localhost:15672/
 
+  elk:
+      image: scoussy/elk:latest
+      networks:
+        - microservices
+      ports:
+        - "5601:5601"
+        - "9200:9200"
+        - "5044:5044"
+        - "5000:5000"
+        - "4560:4560"
+      #command: ["/usr/local/bin/start.sh"]
+      expose:
+        - "5601"
+        - "4560"
+      volumes:
+        - /root/elasticsearch/
+        - /var/lib/elasticsearch/elasticsearch
+  #elk url http://localhost:5601/
+
   config-api:
       image: sleepingtalent/configuration-api:latest
       networks:
