@@ -33,3 +33,18 @@ spec:
               ports:
               - containerPort: 2222
 
+---
+
+kind: Service
+metadata:
+    name: user-service-gateway
+    labels:
+        app: user-service
+        tier: backend
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 2222
+    selector:
+        app: user-service
+        tier: backend
