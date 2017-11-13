@@ -1,5 +1,6 @@
 package com.babcock.integration.asserter;
 
+import com.noveria.assertion.exception.WaitUntilAssertionError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
