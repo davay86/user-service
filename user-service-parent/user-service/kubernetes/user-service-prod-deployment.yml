@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: user-service
-              image: sleepingtalent/user-service:1.0.20
+              image: sleepingtalent/user-service:1.0.21-SNAPSHOT
               readinessProbe:
                 httpGet:
                   path: /user-service/health
