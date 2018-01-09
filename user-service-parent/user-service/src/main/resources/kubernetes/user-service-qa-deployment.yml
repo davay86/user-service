@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: user-service
-              image: sleepingtalent/user-service:@docker.release.version@-RC
+              image: emtdevelopment/user-service:@docker.release.version@-RC
               readinessProbe:
                 httpGet:
                   path: /user-service/health

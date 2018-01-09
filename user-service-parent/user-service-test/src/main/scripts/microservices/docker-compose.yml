@@ -19,7 +19,7 @@ services:
         - "3306"
 
   user-service:
-      image: sleepingtalent/user-service:snapshot
+      image: emtdevelopment/user-service:snapshot
       environment:
       - SERVER_PORT=2222
       - SPRING_PROFILES_ACTIVE=test

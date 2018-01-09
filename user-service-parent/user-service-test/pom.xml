@@ -95,7 +95,7 @@
                                 <configuration>
                                     <images>
                                         <image>
-                                            <name>sleepingtalent/user-service:${project.version}-RC</name>
+                                            <name>emtdevelopment/user-service:${project.version}-RC</name>
                                             <build>
                                                 <dockerFileDir>
                                                     ${project.parent.basedir}/user-service/target/docker-dist
@@ -117,7 +117,7 @@
                                 <configuration>
                                     <images>
                                         <image>
-                                            <name>sleepingtalent/user-service:latest</name>
+                                            <name>emtdevelopment/user-service:latest</name>
                                             <build>
                                                 <dockerFileDir>
                                                     ${project.parent.basedir}/user-service/target/docker-dist
@@ -287,7 +287,7 @@
                             <skip>${skip.build.microservices.services}</skip>
                             <images>
                                 <image>
-                                    <name>sleepingtalent/user-service:snapshot</name>
+                                    <name>emtdevelopment/user-service:snapshot</name>
                                     <build>
                                         <dockerFileDir>${project.parent.basedir}/user-service/target/docker-dist
                                         </dockerFileDir>

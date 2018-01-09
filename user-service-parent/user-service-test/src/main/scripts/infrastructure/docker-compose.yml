@@ -7,7 +7,7 @@ version: '2'
 services:
 
 #  rabbitmq:
-#      image: sleepingtalent/rabbitmq-docker:latest
+#      image: emtdevelopment/rabbitmq-docker:latest
 #      networks:
 #        - microservices
 #      environment:
@@ -90,7 +90,7 @@ services:
   #elk url http://localhost:5601/
 
   config-api:
-      image: sleepingtalent/configuration-api:latest
+      image: emtdevelopment/configuration-api:latest
       networks:
         - microservices
       environment:
@@ -106,7 +106,7 @@ services:
   #http://localhost:1111/config-api/info
 
   security-api:
-      image: sleepingtalent/security-api:latest
+      image: emtdevelopment/security-api:latest
       networks:
         - microservices
       environment:
@@ -124,7 +124,7 @@ services:
   #http://localhost:1112/auth/info
 
   turbine-server:
-      image: sleepingtalent/turbine-server:latest
+      image: emtdevelopment/turbine-server:latest
       networks:
         - microservices
       environment:
