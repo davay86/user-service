@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: user-service
-              image: emtdevelopment/user-service:1.0.22-RC
+              image: emtdevelopment/user-service:1.0.23-RC
               readinessProbe:
                 httpGet:
                   path: /user-service/health
